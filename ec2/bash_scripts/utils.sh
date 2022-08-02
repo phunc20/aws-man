@@ -15,7 +15,7 @@ stopme() {
         #sleep $@ && aws ec2 stop-instances --instance-ids $instance_id
 
         # 2. use `pv` to display ETA
-        if  ! command -v pv > /dev/null; then$
+        if  ! command -v pv > /dev/null; then
             echo "Command 'pv' not found"
             echo "sudo apt-get install -y pv"
             sudo apt-get install -y pv > /dev/null
