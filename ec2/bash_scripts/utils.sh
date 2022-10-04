@@ -9,7 +9,10 @@ stopme() {
         echo "  stopme 5h 30m"
         echo "Exit. Try again."
     else
-        instance_id=$(wget -q -O - http://169.254.169.254/latest/meta-data/instance-id)
+        ip="169.254.169.254"
+        instance_id=$(wget -q -O - http://${ip}/latest/meta-data/instance-id)
+        my_region=$(curl -s http://${ip}/latest/meta-data/placement/availability-zone | sed 's/[a-z]$//')
+        #my_region=$(curl http://${ip}/latest/dynamic/instance-identity/document | grep region | awk -F\" '{print $4}')
 
         ## 1. naively sleep
         #sleep $@ && aws ec2 stop-instances --instance-ids $instance_id
@@ -21,7 +24,7 @@ stopme() {
             sudo apt-get install -y pv > /dev/null
         fi
         n_seconds=$(t2s $@)
-        yes | pv -SL1 -F "Stop instance $instance_id in %e" -s $n_seconds > /dev/null && aws ec2 stop-instances --instance-ids $instance_id
+        yes | pv -SL1 -F "Stop instance $instance_id in %e" -s $n_seconds > /dev/null && aws ec2 stop-instances --instance-ids $instance_id  --region $my_region
     fi
 }
 
