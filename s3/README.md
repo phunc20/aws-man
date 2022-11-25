@@ -5,7 +5,7 @@
   ```sh
   aws s3 cp s3://path/to/some/folder ./local_folder --recursive
   # or
-  aws s3 sync s3://path/to/some/folder ./local_folder --recursive
+  aws s3 sync s3://path/to/some/folder ./local_folder
   ```
 
 
